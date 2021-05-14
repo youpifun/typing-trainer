@@ -6,11 +6,11 @@
 </template>
 
 <script>
-import Field from './components/Field.vue'
+import Field from "./components/Field.vue"
 import StartWindow from "./components/StartWindow.vue";
 
 export default {
-    name: 'App',
+    name: "App",
     components: {
         Field,
         StartWindow
@@ -18,30 +18,29 @@ export default {
     data() { 
         return {
             isModalActive: true,
-            text: '',
+            text: "",
         }
     },
     methods: {
         startTrain(settings) {
+            let language = settings.language;
             console.log(settings);
-            this.getTextFromSource()
+            this.getTextFromSource(language)
             .then(res => {
                 this.text = res;
                 this.isModalActive = false
                 })
             .catch(err => alert(err));
         },
-        getTextFromSource() {
+        getTextFromSource(language) {
             return new Promise((resolve, reject) =>{
                 let xhr = new XMLHttpRequest();
-                xhr.open('GET','https://baconipsum.com/api/?type=all-meat&sentences=5&format=text', true);
-                xhr.responseType = 'text';
+                let url = (language==="eng") ? "https://baconipsum.com/api/?type=all-meat&sentences=5" : "https://fish-text.ru/get?number=3";
+                xhr.open("GET", url, true);
+                xhr.responseType = "json";
                 xhr.onload = () => {
-                    if (xhr.status === 200) {
-                        resolve(xhr.response);
-                    } else {
-                        reject(xhr.response);
-                    }
+                    let [answerText, isSuccessfulResult] = this.formatAnswerFromAPI(xhr, language);
+                    isSuccessfulResult ? resolve(answerText) : reject(answerText);
                 }
                 xhr.onerror = () => {
                     reject(xhr.response);
@@ -49,6 +48,14 @@ export default {
                 xhr.send();
             })
         },
+        formatAnswerFromAPI(xhr, language) {
+            let result = xhr.response;
+            if (language==="eng"){
+                return (xhr.status === 200) ? [result[0], true] : [result, false];
+            } else {
+                return (xhr.status === 200) ? [result.text, true] : [result.text, false];
+            }
+        }
     }
 }
 </script>
