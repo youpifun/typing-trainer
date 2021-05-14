@@ -30,7 +30,7 @@ export default {
     methods: {
         startTrain() {
             let lang = document.getElementById("language").value;
-            let fontSize = document.getElementById("font-size").value;
+            let fontSize = document.getElementById("font-size").value + "px";
             let settings = {language: lang, fontSize: fontSize};
             this.$emit('startTrain', settings);
         }

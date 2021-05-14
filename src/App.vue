@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <StartWindow v-if="isModalActive" @startTrain="startTrain"/>
-        <Field :fieldText="text"/>
+        <Field :fieldText="text" :fontSize="fontSize" v-if="isTextFieldActive"/>
     </div>
 </template>
 
@@ -18,17 +18,20 @@ export default {
     data() { 
         return {
             isModalActive: true,
+            isTextFieldActive: false,
             text: "",
+            fontSize: 0
         }
     },
     methods: {
         startTrain(settings) {
-            let language = settings.language;
-            console.log(settings);
+            let language;
+            [language, this.fontSize] = [settings.language, settings.fontSize]
             this.getTextFromSource(language)
             .then(res => {
                 this.text = res;
-                this.isModalActive = false
+                this.isModalActive = false,
+                this.isTextFieldActive = true
                 })
             .catch(err => alert(err));
         },
