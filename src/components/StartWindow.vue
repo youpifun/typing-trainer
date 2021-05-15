@@ -39,14 +39,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @mixin centered-flex {
+    $small-border: 2px solid black;
+    @mixin centered-align-flex {
         display: flex;
-        justify-content: center;
         align-items: center;
     }
 
     .modal-window {
-        @include centered-flex;
+        @include centered-align-flex;
+        justify-content: center;
         width: 100%;
         height: 100%;
         position: absolute;
@@ -55,13 +56,12 @@ export default {
     }
 
     .start-block {
-        display: flex;
+        @include centered-align-flex;
         justify-content: space-evenly;
-        align-items: center;
         flex-direction: column;
         width: 40%;
         height: 30%;
-        border: 2px solid black;
+        border: $small-border;
         border-radius: 15px;
         background-color: #fff;
     }
@@ -82,7 +82,7 @@ export default {
 
     .start-block__btn {
         padding: 5px 10px;
-        border: 2px solid black;
+        border: $small-border;
         border-radius: 5px;
         cursor: pointer;
         &:hover {
