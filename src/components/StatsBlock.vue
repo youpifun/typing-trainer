@@ -16,6 +16,8 @@ export default {
             totalErrorAmount: Number,
             errorCountingType: String,
             firstTimeRightAmount: Number,
+            startInputTime: Number,
+            rightInputTimestamp: Number
         }
     },
     data() {

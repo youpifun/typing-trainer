@@ -3,6 +3,13 @@
         <div class="start-block">
             <div class="start-block__settings">
                 <div class="settings__select">
+                    <span class="setting-text">Выберите тип отображения:</span>
+                    <select id="display-type">
+                        <option value="textField">Тектовое поле</option>
+                        <option value="stringField">Строка</option>
+                    </select>
+                </div>
+                <div class="settings__select">
                     <span class="setting-text">Выберите язык текста:</span>
                     <select id="language">
                         <option value="rus">Русский</option>
@@ -70,10 +77,12 @@ export default {
     name: "StartWindow",
     methods: {
         startTrain() {
+            let displayType = document.getElementById("display-type").value;
             let lang = document.getElementById("language").value;
             let fontSize = document.getElementById("font-size").value + "px";
             let errorCountingType = document.getElementById("error-counting-type").value;
             let settings = {
+                displayType: displayType,
                 language: lang,
                 fontSize: fontSize,
                 errorCountingType: errorCountingType
@@ -107,7 +116,7 @@ export default {
         flex-direction: column;
         width: 40%;
         min-width: 420px;
-        height: 40%;
+        height: 55%;
         min-height: 280px;
         border: $small-border;
         box-shadow: 0 0 30px 20px rgba(0,0,0,0.5);
@@ -117,7 +126,7 @@ export default {
 
     .start-block__settings {
         width: 80%;
-        height: 30%;
+        height: 50%;
         display: flex;
         flex-wrap: wrap;
     }
@@ -139,7 +148,6 @@ export default {
     }
 
     .start-block__btn {
-        margin-top: 5%;
         padding: 5px 15px;
         border: $small-border;
         border-radius: 5px;
