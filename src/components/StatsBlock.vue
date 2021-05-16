@@ -1,7 +1,7 @@
 <template>
     <div class="stats-block">
-        <div class="accuracy">{{accuracy}}%</div>
-        <div class="input-speed"></div>
+        <div class="accuracy">{{accuracy.toFixed(2)}}%</div>
+        <div class="input-speed">{{inputSpeed}} Символов в минуту</div>
     </div>
 </template>
 
@@ -62,8 +62,12 @@ export default {
                 }
                 default: return 100;
             }
+        },
+        inputSpeed: function () {
+            let info = this.statsInfo;
+            let speed = Math.round(60*this.userRightTextLength/(info.rightInputTimestamp-info.startInputTime)*1000);
+            return isNaN(speed) ? 0 : speed;
         }
-        //inputSpeed: 0
     }
 }
 </script>

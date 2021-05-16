@@ -5,7 +5,7 @@
                 <div class="settings__select">
                     <span class="setting-text">Выберите тип отображения:</span>
                     <select id="display-type">
-                        <option value="textField">Тектовое поле</option>
+                        <option value="textField">Текстовое поле</option>
                         <option value="stringField">Строка</option>
                     </select>
                 </div>

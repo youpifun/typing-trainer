@@ -71,7 +71,7 @@ export default {
         startTraining() {
             document.addEventListener('keydown', (e)=>{
                 if (this.statsInfo.startInputTime == 0) {
-                    this.statsInfo.startInputTime = new Date;
+                    this.statsInfo.startInputTime = Date.now();
                 }
                 if (/^[a-zA-Zа-яА-ЯЁё,.?!-:;() ]$/.test(e.key)) {//ввели букву
                     this.checkLetter(e.key);
@@ -104,7 +104,7 @@ export default {
                 this.addFirstTimeAmount(isCurrentLetterCorrect);
             }
             if (isCurrentLetterCorrect) {
-                this.statsInfo.rightInputTimestamp = new Date();
+                this.statsInfo.rightInputTimestamp = Date.now();
                 this.rightUserInputAction(userInputKey);
             } else {
                 this.wrongUserInputAction();
