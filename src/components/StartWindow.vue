@@ -18,6 +18,15 @@
                         <option value="22">22</option>
                     </select>
                 </div>
+                <div class="settings__select">
+                    <span>Выберите тип подсчета ошибок:</span>
+                    <select id="error-counting-type">
+                        <option value="easy">Робин Гуд</option>
+                        <option value="medium">Ад часто ошибающихся</option>
+                        <option value="hard">Ад не смотрящих в экран</option>
+                        <option value="extreme">Путь самурая</option>
+                    </select>
+                </div>
             </div>
             <button class="start-block__btn" @click="startTrain">Начать</button>
         </div>
@@ -31,7 +40,12 @@ export default {
         startTrain() {
             let lang = document.getElementById("language").value;
             let fontSize = document.getElementById("font-size").value + "px";
-            let settings = {language: lang, fontSize: fontSize};
+            let errorCountingType = document.getElementById("error-counting-type").value;
+            let settings = {
+                language: lang,
+                fontSize: fontSize,
+                errorCountingType: errorCountingType
+            };
             this.$emit('startTrain', settings);
         }
     }
@@ -60,7 +74,8 @@ export default {
         justify-content: space-evenly;
         flex-direction: column;
         width: 40%;
-        height: 30%;
+        min-width: 420px;
+        height: 40%;
         border: $small-border;
         border-radius: 15px;
         background-color: #fff;
@@ -81,6 +96,7 @@ export default {
     }
 
     .start-block__btn {
+        margin-top: 5%;
         padding: 5px 10px;
         border: $small-border;
         border-radius: 5px;

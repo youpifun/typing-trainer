@@ -1,7 +1,12 @@
 <template>
     <div id="app">
         <StartWindow v-if="isModalActive" @startTrain="startTrain"/>
-        <Field :fieldText="text" :fontSize="fontSize" v-if="isTextFieldActive"/>
+        <Field 
+            :fieldText="text"
+            :fontSize="fontSize"
+            :errorCountingType="errorCountingType"
+            v-if="isTextFieldActive"
+        />
     </div>
 </template>
 
@@ -20,13 +25,14 @@ export default {
             isModalActive: true,
             isTextFieldActive: false,
             text: "",
-            fontSize: 0
+            fontSize: 0,
+            errorCountingType: ""
         }
     },
     methods: {
         startTrain(settings) {
             let language;
-            [language, this.fontSize] = [settings.language, settings.fontSize]
+            [language, this.fontSize, this.errorCountingType] = [settings.language, settings.fontSize, settings.errorCountingType]
             this.getTextFromSource(language)
             .then(res => {
                 this.text = res;
@@ -38,7 +44,7 @@ export default {
         getTextFromSource(language) {
             return new Promise((resolve, reject) =>{
                 let xhr = new XMLHttpRequest();
-                let url = (language==="eng") ? "https://baconipsum.com/api/?type=all-meat&sentences=5" : "https://fish-text.ru/get?number=3";
+                let url = (language==="eng") ? "https://baconipsum.com/api/?type=all-meat&sentences=4" : "https://fish-text.ru/get?number=2";
                 xhr.open("GET", url, true);
                 xhr.responseType = "json";
                 xhr.onload = () => {
