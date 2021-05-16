@@ -4,21 +4,21 @@
             <div class="start-block__settings">
                 <div class="settings__select">
                     <span class="setting-text">Выберите тип отображения:</span>
-                    <select id="display-type">
+                    <select v-model="displayType">
                         <option value="textField">Текстовое поле</option>
                         <option value="stringField">Строка</option>
                     </select>
                 </div>
                 <div class="settings__select">
                     <span class="setting-text">Выберите язык текста:</span>
-                    <select id="language">
+                    <select v-model="language">
                         <option value="rus">Русский</option>
                         <option value="eng">English</option>
                     </select>
                 </div>
                 <div class="settings__select">
                     <span class="setting-text">Выберите размер шрифта:</span>
-                    <select id="font-size">
+                    <select v-model="fontSize">
                         <option value="16">16</option>
                         <option value="18">18</option>
                         <option value="20">20</option>
@@ -27,7 +27,7 @@
                 </div>
                 <div class="settings__select">
                     <span class="setting-text">Выберите тип подсчета ошибок:</span>
-                    <select id="error-counting-type">
+                    <select v-model="errorCountingType">
                         <option value="easy">Доверительный</option>
                         <option value="medium">Справедливый</option>
                         <option value="hard">Препод по русскому</option>
@@ -36,27 +36,24 @@
                     <div class="help-icon">
                         <img src="../assets/help-mark.png" class="help-icon__image" alt="Подробнее"/>
                         <div class="help-icon__text">
-                            <p>
+                            <p v-if="errorCountingType=='easy'">
                                 Доверительный: Учитываем ваши ошибки относительно всего текста.
                                 Ошибкой считается первый неправильно введенный символ. 
                                 (точность = количество правильных символов всего текста/длину текста)
                             </p>
-                            <br/>
-                            <p>
+                            <p v-if="errorCountingType=='medium'">
                                 Справедливый: Учитываем ваши ошибки относительно введенного текста. 
                                 Исправленные символы СЧИТАЮТСЯ правильными. 
                                 (точность = количество правильных символов/
                                 <span class="red-text">количество нажатых клавиш</span>)
                             </p>
-                            <br/>
-                            <p>
+                            <p v-if="errorCountingType=='hard'">
                                 Препод по русскому: Учитываем ваши ошибки относительно введенного текста. 
                                 Исправленные символы <span class="red-text">не считаются</span> <span class="green-text">правильными</span>. 
                                 (точность = количество правильных символов/количество всех ранее введенных 
                                 <span class="green-text">правильных</span> символов)
                             </p>
-                            <br/>
-                            <p>
+                            <p v-if="errorCountingType=='extreme'">
                                 Адский путь самурая: Никаких пощад!
                                 Учитываем ваши ошибки относительно введенного текста. 
                                 Исправленные символы <span class="red-text">не считаются</span> <span class="green-text">правильными</span>. 
@@ -75,17 +72,21 @@
 <script>
 export default {
     name: "StartWindow",
+    data() {
+        return {
+            displayType: "textField",
+            language: "rus",
+            fontSize: 16,
+            errorCountingType: "easy",
+        }
+    },
     methods: {
         startTrain() {
-            let displayType = document.getElementById("display-type").value;
-            let lang = document.getElementById("language").value;
-            let fontSize = document.getElementById("font-size").value + "px";
-            let errorCountingType = document.getElementById("error-counting-type").value;
             let settings = {
-                displayType: displayType,
-                language: lang,
-                fontSize: fontSize,
-                errorCountingType: errorCountingType
+                displayType: this.displayType,
+                language: this.language,
+                fontSize: this.fontSize + "px",
+                errorCountingType: this.errorCountingType
             };
             this.$emit('startTrain', settings);
         }
@@ -117,7 +118,7 @@ export default {
         width: 40%;
         min-width: 420px;
         height: 55%;
-        min-height: 280px;
+        min-height: 300px;
         border: $small-border;
         box-shadow: 0 0 30px 20px rgba(0,0,0,0.5);
         border-radius: 15px;
@@ -191,16 +192,12 @@ export default {
         padding: 5px;
         left: 10px;
         width: 200px;
-        height: 230px;
+        height: fit-content;
         border: $small-border;
         border-radius: 5px;
-        overflow-y: scroll;
         background-color: rgb(170, 226, 248);
         &:hover {
             display: block;
-        }
-        &::-webkit-scrollbar {
-            width: 0;
         }
     }
 
@@ -212,7 +209,18 @@ export default {
         color: green;
     }
 
+    @media only screen and (max-height: 400px),
+           screen and (max-width: 800px) {
+        $helpTextPosition: 298px;
+        .help-icon__text {
+            width: $helpTextPosition;
+            left: -$helpTextPosition;
+            top: -100px;
+        }
+    }
+
     @media only screen and (max-width: 480px) {
+        $helpTextPosition: 298px;
         * {
             font-size: 20px;
         }
@@ -245,8 +253,9 @@ export default {
         }
 
         .help-icon__text {
-            width: 300px;
-            left: -300px;
+            width: $helpTextPosition;
+            left: -$helpTextPosition;
+            top: -155px;
         }
     }
 </style>
