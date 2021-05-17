@@ -225,6 +225,8 @@ export default {
         opacity: 0;
         width: 0px;
         height: 0px;
+        position: absolute;
+        top: 200px;
         overflow: hidden;
     }
 </style>
