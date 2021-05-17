@@ -23,6 +23,7 @@
             :userRightTextLength="curLetterIndex"
             />
         </div>
+        <input type="text" id="trigger-mobile-keyboard" autofocus/>
     </div>
 </template>
 
@@ -66,6 +67,9 @@ export default {
     },
     methods: {
         startTraining() {
+            document.addEventListener('click', function() {
+                document.getElementById("trigger-mobile-keyboard").focus();
+            });
             document.addEventListener('keydown', (e)=>{
                 if (this.statsInfo.startInputTime == 0) {
                     this.statsInfo.startInputTime = Date.now();
@@ -204,5 +208,12 @@ export default {
 
     .stats-block-container {
         flex-grow: 1;
+    }
+
+    #trigger-mobile-keyboard {
+        opacity: 0;
+        width: 0px;
+        height: 0px;
+        overflow: hidden;
     }
 </style>
