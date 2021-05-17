@@ -46,6 +46,8 @@ export default {
             fieldType: this.displayType,
             curLetterIndex: 0,
             userText: "",
+            inputText: "",
+            previousText: "",
             curFieldText: this.fieldText,
             isErrorSpanStyle: false,
             isFirstAttempt: true,//Для подсчета "ошибок первого раза"
@@ -68,7 +70,18 @@ export default {
     },
     methods: {
         startTraining(isMobile) {
-            console.log(isMobile);
+            let inputTag = document.getElementById("trigger-mobile-keyboard");
+            inputTag.addEventListener('compositionupdate', (e) => {//костыль для очистки автодополнения на телефоне
+                if (this.statsInfo.startInputTime == 0) {          //Нужен, ибо никакие события адекватно не отслеживают этот ввод...
+                    this.statsInfo.startInputTime = Date.now();
+                }
+                this.checkLetter(e.data);
+                inputTag.blur();
+                window.getSelection().removeAllRanges();
+                setTimeout(() => {
+                    inputTag.focus();
+                }, 10);
+            });
             let eventType = isMobile ? "textInput" : "keydown";//для мобилок keydown/keypress - баганый (всегда 229 код символа)
             document.addEventListener("click", function() {
                 document.getElementById("trigger-mobile-keyboard").focus();//триггер клавиатуры
