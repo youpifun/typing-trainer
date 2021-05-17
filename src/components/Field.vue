@@ -65,11 +65,10 @@ export default {
     mounted: function() {
         let textStyles = document.getElementsByClassName("text-container")[0];
         textStyles.style.fontSize = this.fontSize;
-        const isMobile = /Mobile|webOS|BlackBerry|IEMobile|MeeGo|mini|Fennec|Windows Phone|Android|iP(ad|od|hone)/i.test(navigator.userAgent);//детектим мобилку
-        this.startTraining(isMobile);
+        this.startTraining();
     },
     methods: {
-        startTraining(isMobile) {
+        startTraining() {
             let inputTag = document.getElementById("trigger-mobile-keyboard");
             inputTag.addEventListener('compositionupdate', (e) => {//костыль для очистки автодополнения на телефоне
                 if (this.statsInfo.startInputTime == 0) {          //Нужен, ибо никакие события адекватно не отслеживают этот ввод...
@@ -82,20 +81,20 @@ export default {
                     inputTag.focus();
                 }, 10);
             });
-            let eventType = isMobile ? "textInput" : "keydown";//для мобилок keydown/keypress - баганый (всегда 229 код символа)
             document.addEventListener("click", function() {
                 document.getElementById("trigger-mobile-keyboard").focus();//триггер клавиатуры
             });
-            document.addEventListener(eventType, (e)=>{
-                if (this.statsInfo.startInputTime == 0) {
+            document.addEventListener("textInput", (e) => {//для мобилок keydown/keypress - баганый (всегда 229 код символа)
+                if (this.statsInfo.startInputTime == 0) {//поэтому отслеживаем textInput (не работает с автодополнением на клаве)
                     this.statsInfo.startInputTime = Date.now();
                 }
-                if (eventType=="keydown"&&/^[a-zA-Zа-яА-ЯЁё,.?!-:;() ]$/.test(e.key)) {//ввели букву на десктопе
-                    this.checkLetter(e.key);
-                } else if (e.key==="Backspace") {//блок исправления стиля span
-                    this.isErrorSpanStyle = false;
-                } else if (eventType=="textInput"&&/^[a-zA-Zа-яА-ЯЁё,.?!-:;() ]$/.test(e.data)){//буква с мобилки
+                if (/^[a-zA-Zа-яА-ЯЁё,.?!-:;() ]$/.test(e.data)){
                     this.checkLetter(e.data);
+                }
+            });
+            document.addEventListener("keydown", (e)=>{
+            if (e.key==="Backspace") {//блок исправления стиля span
+                    this.isErrorSpanStyle = false;
                 }
             });
         },
@@ -226,6 +225,7 @@ export default {
 
     .stats-block-container {
         flex-grow: 1;
+        flex-basis: 40%;
     }
 
     #trigger-mobile-keyboard {
