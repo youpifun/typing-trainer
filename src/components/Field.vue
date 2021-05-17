@@ -5,14 +5,11 @@
                 <div id="user-text" v-bind:class="[
                     {'text-containter__user-text': displayType == 'textField'}, 
                     {'string-text-containter__user-text': displayType == 'stringField'}]"
-                ><!-- Костыль с комментариями в разметке, дабы избежать появления лишних пробелов
-                -->{{userText}}<!--
-                --><span
-                        v-bind:class="[{
-                                error: isErrorSpanStyle}, 
-                                'current-letter', 
-                                {'stringLetterSpan': displayType == 'stringField'}]"
-                    >{{fieldText[this.curLetterIndex]}}</span>
+                >{{userText}}<span v-bind:class="[                //Странные переносы в разметке,
+                                        {error: isErrorSpanStyle},//т.к. переносы строк считаются за пробельный символ
+                                        'current-letter',
+                                        {'stringLetterSpan': displayType == 'stringField'}]"
+                             >{{fieldText[this.curLetterIndex]}}</span>
                 </div>
             </div>
             <div v-bind:class="[
@@ -130,13 +127,22 @@ export default {
 
     $textBlockPadding: 15px;
 
+    .wrapper {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: center;
+        margin-top: 10%;
+    }
+
     .text-container {
         position: relative;
         display: flex;
         width: 80%;
         border: 2px solid gray;
         border-radius: 15px;
-        padding: $textBlockPadding; 
+        box-shadow: 0px 0px 10px 5px gray;
+        background-color: white;
+        padding: $textBlockPadding;
     }
 
     .text-containter__text {
@@ -194,5 +200,9 @@ export default {
         width: 50%;
         overflow-x: hidden;
         text-align: end;
+    }
+
+    .stats-block-container {
+        flex-grow: 1;
     }
 </style>
