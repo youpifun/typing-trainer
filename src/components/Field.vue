@@ -70,16 +70,9 @@ export default {
     methods: {
         startTraining() {
             let inputTag = document.getElementById("trigger-mobile-keyboard");
-            inputTag.addEventListener('compositionupdate', (e) => {//костыль для очистки автодополнения на телефоне
-                if (this.statsInfo.startInputTime == 0) {          //Нужен, ибо никакие события адекватно не отслеживают этот ввод...
-                    this.statsInfo.startInputTime = Date.now();
-                }
-                this.checkLetter(e.data);
-                inputTag.blur();
-                window.getSelection().removeAllRanges();
-                setTimeout(() => {
-                    inputTag.focus();
-                }, 10);
+            inputTag.addEventListener('compositionupdate', () => {
+                    alert("Пожалуйста, выключите автодополнение и модификации ввода символов на клавиатуре");
+                    return;
             });
             document.addEventListener("click", function() {
                 document.getElementById("trigger-mobile-keyboard").focus();//триггер клавиатуры
