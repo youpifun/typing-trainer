@@ -3,29 +3,16 @@
         <div class="radial-progress" :data-progress="accuracy.toFixed()">
             <div class="circle">
                 <div class="mask full">
-                    <div :class="[{
-                    'red-background': accuracy.toFixed(2)<50,
-                    'green-background': accuracy.toFixed(2)>75}, 
-                    'fill']"></div>
+                    <div class="fill"></div>
                 </div>
                 <div class="mask half">
-                    <div :class="[{
-                    'red-background': accuracy.toFixed(2)<50,
-                    'green-background': accuracy.toFixed(2)>75}, 
-                    'fill']"></div>
-                     <div :class="[{
-                    'red-background': accuracy.toFixed(2)<50,
-                    'green-background': accuracy.toFixed(2)>75}, 
-                    'fill', 'fix']"></div>
+                    <div class="fill"></div>
+                     <div class="fill fix"></div>
                 </div>
                 <div class="shadow"></div>
             </div>
             <div class="inset">
-                <div :class="[{
-                    'red-font': accuracy.toFixed(2)<50,
-                    'green-font': accuracy.toFixed(2)>75}, 
-                    'percentage']"
-                >
+                <div class="percentage">
                     {{accuracy.toFixed(2)}}%
                 </div>
             </div>
@@ -181,6 +168,46 @@ export default {
 
 	@while ($i <= 100) {
 		&[data-progress="#{$i}"] {
+            @if ($i<50) {
+                .percentage {
+                    color: red;
+                }
+
+                .fill.fix {
+                    background-color: red;
+                }
+            }
+            @if ($i>75) {
+                .percentage {
+                    color: green;
+                }
+
+                .mask.half > .fill.fix {
+                    background-color: green;
+                }
+                
+                .mask.half > .fill {
+                    background-color: green;
+                }
+
+                .mask.full > .fill {
+                    background-color: green;
+                }
+
+            }
+
+            @if ($i<50) {
+                .mask.half > .fill {
+                    background-color: red;
+                }
+                .mask.full > .fill {
+                    background-color: red;
+                }
+                .mask.half > .fill.fix {
+                    background-color: red;
+                }
+            }
+
 			.circle {
 				.mask.full, .fill {
 					-webkit-transform: rotate($increment * $i);
@@ -196,22 +223,6 @@ export default {
 		}
 		$i: $i + 1;
 	}
-}
-
-.red-font {
-    color: red !important;
-}
-
-.red-background {
-    background-color: red !important;
-}
-
-.green-font {
-    color: green !important;
-}
-
-.green-background {
-    background-color: green !important;
 }
 
 .input-speed {
