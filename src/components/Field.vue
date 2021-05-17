@@ -63,21 +63,25 @@ export default {
     mounted: function() {
         let textStyles = document.getElementsByClassName("text-container")[0];
         textStyles.style.fontSize = this.fontSize;
-        this.startTraining();
+        const isMobile = /Mobile|webOS|BlackBerry|IEMobile|MeeGo|mini|Fennec|Windows Phone|Android|iP(ad|od|hone)/i.test(navigator.userAgent);//детектим мобилку
+        this.startTraining(isMobile);
     },
     methods: {
-        startTraining() {
-            document.addEventListener('click', function() {
-                document.getElementById("trigger-mobile-keyboard").focus();
+        startTraining(isMobile) {
+            let eventType = isMobile ? "textInput" : "keydown";//для мобилок keydown/keypress - баганый (всегда 229 код символа)
+            document.addEventListener("click", function() {
+                document.getElementById("trigger-mobile-keyboard").focus();//триггер клавиатуры
             });
-            document.addEventListener('keydown', (e)=>{
+            document.addEventListener(eventType, (e)=>{
                 if (this.statsInfo.startInputTime == 0) {
                     this.statsInfo.startInputTime = Date.now();
                 }
-                if (/^[a-zA-Zа-яА-ЯЁё,.?!-:;() ]$/.test(e.key)) {//ввели букву
+                if (eventType=="keydown"&&/^[a-zA-Zа-яА-ЯЁё,.?!-:;() ]$/.test(e.key)) {//ввели букву на десктопе
                     this.checkLetter(e.key);
                 } else if (e.key==="Backspace") {//блок исправления стиля span
                     this.isErrorSpanStyle = false;
+                } else if (eventType=="textInput"&&/^[a-zA-Zа-яА-ЯЁё,.?!-:;() ]$/.test(e.data)){//буква с мобилки
+                    this.checkLetter(e.data);
                 }
             });
         },

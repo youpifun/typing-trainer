@@ -56,20 +56,20 @@ export default {
         }
     },
     methods: {
-        countEasyAccuracy(info) {//Учитываем ваши ошибки относительно всего текста. Ошибкой считается первый неправильно введенный символ. (точность = количество правильных символов всего текста/длину текста)
+        countEasyAccuracy(info) {//(точность = количество правильных символов всего текста/длину текста)
             return (info.fullTextLength-info.firstTimeErrorAmount)/info.fullTextLength*100;
         },
-        countMediumAccuracy(info) {//Учитываем ваши ошибки относительно введенного текста. Исправленные символы СЧИТАЮТСЯ правильными. (точность = количество правильных символов/количество нажатых клавиш)
+        countMediumAccuracy(info) {//(точность = количество правильных символов/количество нажатых клавиш)
             return ((this.userRightTextLength+info.totalErrorAmount) !== 0) 
                 ? (this.userRightTextLength/(this.userRightTextLength+info.totalErrorAmount))*100 
                 : 100;
         },
-        countHardAccuracy(info) {//Учитываем ваши ошибки относительно введенного текста. Исправленные символы НЕ СЧИТАЮТСЯ правильными. (точность = количество правильных символов/количество всех ранее введенных правильных символов)
+        countHardAccuracy(info) {//(точность = количество правильных символов/количество всех ранее введенных правильных символов)
             return ((info.firstTimeRightAmount + info.firstTimeErrorAmount) !== 0) 
                 ? info.firstTimeRightAmount/(info.firstTimeRightAmount + info.firstTimeErrorAmount)*100 
                 : 100;
         },
-        countExtremeAccuracy(info) {//Учитываем ваши ошибки относительно введенного текста. Исправленные символы НЕ СЧИТАЮТСЯ правильными. (точность = количество правильных символов/количество нажатых клавиш)
+        countExtremeAccuracy(info) {//(точность = количество правильных символов/количество нажатых клавиш)
             return ((this.userRightTextLength+info.totalErrorAmount) !== 0) 
                 ? (info.firstTimeRightAmount/(this.userRightTextLength+info.totalErrorAmount))*100 
                 : 100;
@@ -97,6 +97,7 @@ export default {
         inputSpeed: function () {
             let info = this.statsInfo;
             let speed = Math.round(60*this.userRightTextLength/(info.rightInputTimestamp-info.startInputTime)*1000);
+            if (!isFinite(speed)) return 0;
             return isNaN(speed) ? 0 : speed;
         }
     }
