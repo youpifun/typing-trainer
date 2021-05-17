@@ -5,8 +5,8 @@
                 <div class="settings__select">
                     <span class="setting-text">Выберите тип отображения:</span>
                     <select v-model="displayType">
-                        <option value="textField">Текстовое поле</option>
                         <option value="stringField">Строка</option>
+                        <option value="textField">Текстовое поле</option>
                     </select>
                 </div>
                 <div class="settings__select">
@@ -74,7 +74,7 @@ export default {
     name: "StartWindow",
     data() {
         return {
-            displayType: "textField",
+            displayType: "stringField",
             language: "rus",
             fontSize: 16,
             errorCountingType: "easy",
