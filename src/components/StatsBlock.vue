@@ -97,8 +97,8 @@ export default {
         inputSpeed: function () {
             let info = this.statsInfo;
             let speed = Math.round(60*this.userRightTextLength/(info.rightInputTimestamp-info.startInputTime)*1000);
-            if (!isFinite(speed)) return 0;
-            return isNaN(speed) ? 0 : speed;
+            if (this.userRightTextLength<=1) return 0;
+            return speed;
         }
     }
 }

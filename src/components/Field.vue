@@ -68,6 +68,7 @@ export default {
     },
     methods: {
         startTraining(isMobile) {
+            console.log(isMobile);
             let eventType = isMobile ? "textInput" : "keydown";//для мобилок keydown/keypress - баганый (всегда 229 код символа)
             document.addEventListener("click", function() {
                 document.getElementById("trigger-mobile-keyboard").focus();//триггер клавиатуры
