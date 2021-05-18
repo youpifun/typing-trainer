@@ -70,6 +70,7 @@ export default {
     methods: {
         startTraining() {
             let inputTag = document.getElementById("trigger-mobile-keyboard");
+            inputTag.focus();
             inputTag.addEventListener('compositionupdate', () => {
                     alert("Пожалуйста, выключите автодополнение и модификации ввода символов на клавиатуре");
                     return;
@@ -77,8 +78,8 @@ export default {
             document.addEventListener("click", function() {
                 document.getElementById("trigger-mobile-keyboard").focus();//триггер клавиатуры
             });
-            document.addEventListener("textInput", (e) => {//для мобилок keydown/keypress - баганый (всегда 229 код символа)
-                if (this.statsInfo.startInputTime == 0) {//поэтому отслеживаем textInput (не работает с автодополнением на клаве)
+            document.addEventListener("input", (e) => {//для мобилок keydown/keypress - баганый (всегда 229 код символа)
+                if (this.statsInfo.startInputTime == 0) {//поэтому отслеживаем input (не работает с автодополнением на клаве телефона)
                     this.statsInfo.startInputTime = Date.now();
                 }
                 if (/^[a-zA-Zа-яА-ЯЁё,.?!-:;() ]$/.test(e.data)){
